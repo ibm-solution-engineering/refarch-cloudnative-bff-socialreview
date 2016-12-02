@@ -3,7 +3,6 @@ module.exports = function (Review) {
   Review.comment = function (comment, itemId, rating, reviewer_email, reviewer_name, review_date, cb) {
 
     Review.post(comment, itemId, rating, reviewer_email, reviewer_name, review_date, function (err, response, context) {
-      console.log("Hey yo!");
       if (err) {
         console.error('> error: ' + error.stack);
         throw err;
