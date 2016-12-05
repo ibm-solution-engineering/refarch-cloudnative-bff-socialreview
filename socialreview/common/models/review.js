@@ -4,8 +4,8 @@ module.exports = function (Review) {
 
     Review.post(comment, itemId, rating, reviewer_email, reviewer_name, review_date, function (err, response, context) {
       if (err) {
-        console.error('> error: ' + error.stack);
-        throw err;
+        console.error('> error: ', JSON.stringify(err, null, 2));
+        cb(err);
       } //error making request
       if (response.error) {
         console.error('> response error: ' + response.error.stack);

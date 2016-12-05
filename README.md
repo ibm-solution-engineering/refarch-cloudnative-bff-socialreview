@@ -66,7 +66,7 @@ To run the application or edit the API definition, we recommend to install IBM A
 
 Create Auto-Scaling service in your Bluemix space.
 
-`$ cf create-service Auto-Scaling free cloudnative-autoscale`
+`$ cf create-service Auto-Scaling free cloudnative-autoscale-socialreview`
 
 IBM API Connect developer toolkit provides integrated command line utility to deploy the Loopback application to Bluemix (as Cloud Foundry application) as well as publishing the APIs. To do this, you need to have your Bluemix API Connect service configured properly, if not, please reference the setup README at the root repository *https://github.com/ibm-cloud-architecture/refarch-cloudnative*
 
@@ -79,7 +79,7 @@ Use the following command to deploy the Loopback application
 
 Bind Auto-Scaling service to the published app.
 
-   `$ cf bs socialreview-bff-app cloudnative-autoscale`  
+   `$ cf bs socialreview-bff-app cloudnative-autoscale-socialreview`
    `$ cf restage socialreview-bff-app`   
 
 

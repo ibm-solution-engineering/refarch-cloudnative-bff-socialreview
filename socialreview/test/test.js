@@ -14,20 +14,24 @@ describe('BlueCompute Social Review BFF Test Suites', function () {
   // Running the test locally
   var serviceBaseUrl = process.env.apic_url ? process.env.apic_url : "http://localhost:3000";
   var client_key = process.env.client_key ? process.env.client_key : "";
+  var get_review_options = {
+    uri: serviceBaseUrl + '/api/reviews/list',
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+      'x-ibm-client-id': client_key
+    },
+    resolveWithFullResponse: true,
+    json: true
+  };
+
+  // One minute timeout in case tests get slow
+  this.timeout(60000);
 
   // test the home page loading
   describe('when requests to GET /reviews/list', function () {
     it('should validate', function (done) {
-      var options = {
-        uri: serviceBaseUrl + '/api/reviews/list',
-        headers: {
-          accept: 'application/json',
-          'content-type': 'application/json',
-          'x-ibm-client-id': client_key
-        },
-        resolveWithFullResponse: true,
-        json: true
-      };
+      var options = get_review_options;
 
       rp(options).then(function (response) {
         var body = response.body;
@@ -38,7 +42,7 @@ describe('BlueCompute Social Review BFF Test Suites', function () {
         done();
 
       }).catch(function (error) {
-        console.error(error);
+        console.error(error.statusCode + ": " + error.message);
         done(error);
       });
     });
@@ -81,32 +85,32 @@ describe('BlueCompute Social Review BFF Test Suites', function () {
 
         // Save review id
         review_id = body._id;
+        //console.log("Created review with id: " + review_id);
 
         // Getting all reviews again to find the one we need
-        options = {
-          uri: serviceBaseUrl + '/api/reviews/list',
-          resolveWithFullResponse: true,
-          json: true
-        };
+        var new_options = get_review_options;
 
         // Retrieve reviews
-        return rp(options);
+        return rp(new_options);
 
       }).then(function (response) {
         var body = response.body;
+        //console.log(body);
 
         expect(response).to.have.property('statusCode', 200);
         expect(body).to.not.be.null;
         expect(body).to.not.be.undefined;
 
+        //console.log("Got reviews again for verification");
         // Find review that matches id
-        var r_id = _.findWhere(body, {_Id: review_id})._Id;
+        var review = _.findWhere(body, {_Id: review_id});
+        var r_id = review ? review._Id : 'not a proper _id';
         expect(r_id).to.equal(review_id);
 
         done();
 
       }).catch(function (error) {
-        console.error(error);
+        console.error(error.statusCode + ": " + error.message);
         done(error);
       });
 
