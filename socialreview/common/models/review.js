@@ -14,7 +14,7 @@ module.exports = function(Review) {
       cb(null, response);
     });
 
-    }
+    };
 
     // This code is trying to parse the incoming request Authorization headers
     // Save it to a variable then pass to the REST connect template
@@ -24,7 +24,7 @@ module.exports = function(Review) {
       var ds = Review.getDataSource(),
       listOperation = ds.settings.operations[0],
       headers = listOperation.template.headers;
-      headers['Authorization'] = ctx.req.headers.authorization;
+      headers.Authorization = ctx.req.headers.authorization;
       next();
     });
 
@@ -34,7 +34,7 @@ module.exports = function(Review) {
       var ds = Review.getDataSource(),
       listOperation = ds.settings.operations[1],
       headers = listOperation.template.headers;
-      headers['Authorization'] = ctx.req.headers.authorization;
+      headers.Authorization = ctx.req.headers.authorization;
       next();
     });
 
